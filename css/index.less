@@ -1,0 +1,402 @@
+@import "reset.min.css";
+@import "animate.min.css";
+@import "swiper-3.4.2.min.css";
+html{
+  font-size: 100px;/*640px: 1rem=100px*/
+}
+html, body {
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+  background: #F4F4F4;
+  z-index: -4;
+}
+
+.mainBox {
+  position: relative;
+  margin: 0 auto;
+  max-width: 640px;
+  height: 100%;
+  background: #FFF;
+  overflow: hidden;
+  z-index: -3;
+}
+
+.loadingBox, .phoneBox, .messageBox, .cubeBox, .detailBox {
+  display: none;
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+}
+
+/*loadingBox*/
+.loadingBox{
+  display: block;
+  background: #000;
+
+  .title{
+    position: absolute;
+    top:50%;
+    left: 0;
+    margin-top: unit((-1.4/2)+(-1.5),rem); /*-2.2rem;*/
+    width: 100%;
+    height:1.4rem;
+
+    text-align: center;
+    color: #FFF;
+    letter-spacing: .04rem;/*字间距*/
+  }
+
+  h1 {
+    line-height: .75rem;
+    font-size: .5rem;
+  }
+
+  h2 {
+    margin-top: .2rem;
+    line-height: .45rem;
+    font-size: .26rem;
+  }
+
+  .progress{
+    @w:4.6;
+    @h:.3;
+    position:absolute;
+    top: 50%;
+    left: 50%;
+    margin-left: unit(-@w/2,rem);/* unit(-4.6/2,rem);*/
+    margin-top: unit(-@h/2,rem);
+    width: unit(@w,rem);/*4.6rem;*/
+    height: unit(@h,rem);
+    background: #FFF;
+    border-radius: unit(@h/2, rem);
+
+    .run {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 0;
+      height: unit(@h, rem);
+      border-radius: unit(@h/2, rem);
+
+      transition: .3s; // 在JS中控制width变化的时候又一个些许动画效果
+
+      background-image: -webkit-linear-gradient(left bottom, #5CB85C 0%, #5CB85C 25%, #74C274 25%, #74C274 50%, #5CB85C 50%, #5CB85C 75%, #74C274 75%, #74C274 100%);
+      background-image: linear-gradient(left bottom, #5CB85C 0%, #5CB85C 25%, #74C274 25%, #74C274 50%, #5CB85C 50%, #5CB85C 75%, #74C274 75%, #74C274 100%);
+      background-size: unit(@h,rem) unit(@h,rem);
+      -webkit-animation: loadingMove .5s linear infinite both;
+      animation: loadingMove .5s linear infinite both; /*.5s中完成这个动画、匀速运动、infinite both(运动完成添加最后一帧)*/
+    }
+  }
+}
+
+@-webkit-keyframes loadingMove {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 0 -.3rem;
+  }
+}
+@keyframes loadingMove {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 0 -.3rem;
+  }
+}
+
+/*
+  移动端开发的时候，我们使用的大部分css3样式属性，都需要写两套：
+    -webkit-xxx:
+    xxx:
+
+    加前缀的一定要在前面，不加前缀的在后面（顺序不能乱），只有这样才能适配基本的ios和安卓系统；
+
+    transition/animation/@keyframes/transform/gradient/flex...
+*/
+
+
+/*--PHONE--*/
+.phoneBox {
+  background: url("../img/zf_phoneBg.jpg") no-repeat;
+  background-size: cover;
+  z-index: -2;
+
+  .header {
+    position: absolute;
+    top: .5rem;
+    left: 50%;
+    margin-left: unit(-2.62/2, rem);
+    width: 2.62rem;
+
+    .logo {
+      display: block;
+      width: 100%;
+      height: 1.25rem;
+    }
+
+    .time {
+      display: none;
+      margin-top: .1rem;
+      line-height: .3rem;
+      text-align: center;
+      color: #FFF;
+      font-size: .3rem;
+      letter-spacing: .05rem;
+    }
+  }
+
+  .listen {
+    position: absolute;
+    bottom: .3rem;
+    left: 50%;
+    margin-left: unit(-5.2/2, rem);
+    width: 5.2rem;
+    height: 3.6rem;
+    background: url("../img/zf_phoneListen.png") no-repeat;
+    background-size: 100% 100%;
+
+    .touch {
+      position: absolute;
+      right: -.06rem;
+      bottom: .48rem;
+      z-index: 10;
+      width: 1.6rem;
+      height: 1.6rem;
+    }
+
+    .move {
+      .touch;
+      z-index: -1;
+      box-sizing: border-box; /*让当前写的width和height是盒子最后的宽和高，以后加paddingmargin都没用*/
+      border: .03rem solid #0F0;
+      border-radius: 50%;
+      animation: listenTouchMove 1s linear infinite both;
+    }
+  }
+
+  .detail {
+    position: absolute;
+    bottom: .3rem;
+    left: 50%;
+    margin-left: unit(-5.2/2, rem);
+    width: 5.2rem;
+    height: 6.59rem;
+    background: url("../img/zf_phoneDetail.png") no-repeat;
+    background-size: 100% 100%;
+
+    //=>init position 初始位置
+    transition: .3s;
+    transform: translateY(6.89rem); /*向上移动6.89*/
+
+    .touch {
+      position: absolute;
+      bottom: .28rem;
+      left: 50%;
+      margin-left: unit(-1.6/2, rem);
+      z-index: 10;
+      width: 1.6rem;
+      height: 1.6rem;
+    }
+  }
+}
+
+@keyframes listenTouchMove {
+  0% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0);
+    opacity: 0;
+  }
+}
+
+/*--MESSAGE--*/
+.messageBox {
+  background: #EAEAEA;
+
+  .talkBox {
+    margin-top: .2rem;
+    transition: .3s;
+
+    li {
+      position: relative;
+      min-width: 2.4rem;
+      max-width: 3.6rem;
+      margin-bottom: .4rem;
+      padding: .25rem;
+      line-height: .4rem;
+      font-size: .26rem;
+      border-radius: .1rem;
+
+      //=>init position
+      opacity: 0;
+      transition: .3s;
+      transform: translateY(1rem);
+
+      img {
+        position: absolute;
+        top: 0;
+        width: .82rem;
+        height: .82rem;
+        border-radius: 50%;
+      }
+
+      i {
+        position: absolute;
+        top: .2rem;
+        width: .1rem;
+        height: .2rem;
+      }
+
+      &.student {
+        float: left;
+        margin-left: 1.25rem;
+        background: #FFF;
+        border: .02rem solid #CACACA;
+
+        img {
+          left: -1rem;
+        }
+
+        i {
+          left: -.1rem;
+          background: url("../img/zf_messageArrow1.png") no-repeat;
+          background-size: 100% 100%;
+        }
+      }
+
+      &.teacher {
+        float: right;
+        margin-right: 1.25rem;
+        background: #A2E45C;
+        border: .02rem solid #96B474;
+
+        img {
+          right: -1rem;
+        }
+
+        i {
+          right: -.1rem;
+          background: url("../img/zf_messageArrow2.png") no-repeat;
+          background-size: 100% 100%;
+        }
+      }
+    }
+  }
+
+  .keyBord {
+    position: absolute;
+    left: 0;
+    bottom: -.54rem;
+    width: 100%;
+    height: 5.16rem;
+    background: url("../img/zf_messageKeyboard.png") no-repeat;
+    background-size: 100% 100%;
+
+    //=>init position
+    transition: .3s;
+    transform: translateY(3.7rem);
+
+    span {
+      display: none;
+      position: absolute;
+      top: .35rem;
+      left: .9rem;
+      width: 4rem;
+      height: .4rem;
+      line-height: .4rem;
+      font-size: .25rem;
+      overflow: hidden;
+    }
+
+    .submit {
+      display: none;
+      position: absolute;
+      right: .1rem;
+      bottom: .6rem;
+      width: 1.47rem;
+      height: .74rem;
+      background: url("../img/zf_messageChat.png") no-repeat;
+      background-size: 100% 100%;
+    }
+  }
+}
+
+/*--CUBE--*/
+.cubeBox {
+  background: url("../img/zf_cubeBg.jpg") no-repeat;
+  background-size: cover;
+
+  .tip {
+    position: absolute;
+    bottom: .5rem;
+    left: 50%;
+    margin-left: unit(-3.94/2, rem);
+    width: 3.94rem;
+    height: .44rem;
+  }
+
+  .box {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin: unit(-5.1/2, rem) 0 0 unit(-5.1/2, rem);
+    width: 5.1rem;
+    height: 5.1rem;
+
+    li {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+
+      img {
+        display: block;
+        width: 100%;
+        height: 100%;
+      }
+    }
+  }
+
+  /*3D*/
+  perspective: 2000px; /* 模拟人眼距离舞台的距离，一般都是1000-2000px之间；加视距*/
+
+  .box {
+    transform-style: preserve-3d; /*给当前元素加3d效果*/
+    /*给一个初始旋转角度*/
+    transform: scale(.6) rotateX(-45deg) rotateY(45deg); /*沿着x轴旋转-30度，沿着y轴旋转45度*/ /*scale：缩小多少倍*/
+    transition: .3s;/*从当前角度旋转到另一个角度，有一个几秒的过度效果；*/
+
+    /*挪动6个面*/
+    li {
+      &:nth-child(1) {
+        transform: translateZ(2.55rem); /*沿着z轴正方向移一半*/
+      }
+
+      &:nth-child(2) {
+        transform: translateZ(-2.55rem) rotateY(180deg); /*沿着z轴负方向走一半，沿着y轴旋转180度（正面的后面）*/
+      }
+
+      &:nth-child(3) {
+        transform: translateX(-2.55rem) rotateY(-90deg);/*左侧面，沿着x轴的负方向走一半，沿着y轴往左翻转*/
+      }
+
+      &:nth-child(4) {
+        transform: translateX(2.55rem) rotateY(90deg);
+      }
+
+      &:nth-child(5) {
+        transform: translateY(-2.55rem) rotateX(90deg);
+      }
+
+      &:nth-child(6) {
+        transform: translateY(2.55rem) rotateX(-90deg);
+      }
+    }
+  }
+}
